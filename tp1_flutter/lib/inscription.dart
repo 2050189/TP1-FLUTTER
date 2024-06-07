@@ -1,48 +1,23 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:tp1_flutter/connexion.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'main.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class Inscription extends StatefulWidget {
+  const Inscription({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Inscription> createState() => _InscriptionState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _InscriptionState extends State<Inscription> {
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+
+  final TextEditingController pseudo = TextEditingController();
+  final TextEditingController mdp = TextEditingController();
+  final TextEditingController conf = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(
+          Expanded( // Deco card
             flex: 5,
             child: Column(
               children: [
@@ -63,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   flex: 1,
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.redAccent,
+                        color: MyColorScheme.myPrimaryColor,
                         borderRadius: BorderRadius.only(bottomLeft: Radius.elliptical(400, 100))
                     ),
 
@@ -82,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               flex: 10,
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: Colors.orangeAccent,
+                                    color: MyColorScheme.mySecondaryColor,
                                     borderRadius: BorderRadius.only(bottomLeft: Radius.elliptical(300, 80))
                                 ),
                                 child: Column(
@@ -92,13 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                       child: Container(
                                         width: double.maxFinite,
                                         decoration: BoxDecoration(
-                                            color: Colors.yellow,
+                                            color: MyColorScheme.myTertiaryColor,
                                             borderRadius: BorderRadius.only(bottomLeft: Radius.elliptical(300, 80))
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                              "Bonjour!", textAlign: TextAlign.center, style: TextStyle(fontSize: 50, fontFamily: 'DMSerif'),
-                                          ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Bienvenue!", textAlign: TextAlign.center, style: MyTypography.myDisplayStyleDark,
+                                            ),
+                                            Text("Veuillez vous inscrire.", textAlign: TextAlign.center, style: MyTypography.myBodyStyleDark,)
+                                          ]
                                         ),
                                       ),
                                     ),
@@ -129,9 +108,77 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Expanded(
+          Expanded(// form
             flex: 6,
-            child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 250,
+                      width: 350,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [ // TODO : RECHECK FIELDS
+                          TextFormField(
+                            controller: pseudo,
+                            decoration: InputDecoration(
+                              hintStyle: MyTypography.myHintStyle,
+                              labelStyle: MyTypography.myLabelStyle,
+                              labelText: "Pseudo",
+                              border: OutlineInputBorder(),
+                              hintText: '2 carac. min.',
+                            ),
+                          ),
+                          TextFormField(
+                            controller: mdp,
+                            decoration: InputDecoration(
+                              hintStyle: MyTypography.myHintStyle,
+                              labelStyle: MyTypography.myLabelStyle,
+                              labelText: "Mot de passe",
+                              border: OutlineInputBorder(),
+                              hintText: '4 carac.min',
+
+                            ),
+
+                            obscureText: true,
+                          ),
+                          TextFormField(
+                            controller: conf,
+                            decoration: InputDecoration(
+                              hintStyle: MyTypography.myHintStyle,
+                              labelStyle: MyTypography.myLabelStyle,
+                              labelText: "Confirmez le mot de passe",
+                              border: OutlineInputBorder(),
+                              hintText: 'Confirmation',
+                            ),
+                            obscureText: true,
+                          ),
+
+                        ],
+                      ),
+
+
+                    )
+                  ],
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      OutlinedButton(onPressed: () {
+                        NavigationHelper().home(context);
+                      }, child: Text("Connexion", style: MyTypography.myBtnTextStyle)),
+                      FilledButton(onPressed: () {
+                        NavigationHelper().navigateTo(context, Inscription()); //TODO : CHANGE TO HOME PAGE
+                      }, child: Text("S'inscrire", style: MyTypography.myBtnTextStyle))
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  )
+              ],
 
             ),
           ),
