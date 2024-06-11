@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:tp1_flutter/connexion.dart';
 import 'package:tp1_flutter/inscription.dart';
 
+import 'DTOs/transfer.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -132,5 +134,23 @@ class NavigationHelper {
       ),
     );
   }
+
+}
+
+class HttpHelper{
+  signupReq(SignupRequest sr){
+    try{
+
+    }
+    catch(e){
+
+    }
+
+  }
+
+  signinReq(){
+
+  }
+
 
 }

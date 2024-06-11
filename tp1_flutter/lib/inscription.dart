@@ -1,5 +1,6 @@
-import 'dart:html';
+// import 'dart:html';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1_flutter/connexion.dart';
 
@@ -18,6 +19,17 @@ class _InscriptionState extends State<Inscription> {
   final TextEditingController pseudo = TextEditingController();
   final TextEditingController mdp = TextEditingController();
   final TextEditingController conf = TextEditingController();
+
+  void sendhttp() async{
+    try{
+      var resp = await Dio().get("http://10.0.2.2:8080/test");
+      print(resp.data);
+    }
+    catch(e){
+      print(e);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +182,7 @@ class _InscriptionState extends State<Inscription> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       OutlinedButton(onPressed: () {
+                        sendhttp();
                         NavigationHelper().home(context);
                       }, child: Text("Connexion", style: MyTypography.myBtnTextStyle)),
                       FilledButton(onPressed: () {
