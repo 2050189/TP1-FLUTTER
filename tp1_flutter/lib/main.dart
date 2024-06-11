@@ -1,5 +1,6 @@
 //import 'dart:html';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp1_flutter/connexion.dart';
 import 'package:tp1_flutter/inscription.dart';
@@ -16,7 +17,8 @@ class MyColorScheme extends ColorScheme{
   static const Color mySecondaryColor = Colors.orangeAccent;
   static const Color myTertiaryColor = Colors.yellow;
   static const Color myBackgroundColor = Colors.white;
-  static const Color myAccentColor = Color(0xFFCBE896);
+  static const Color myAccentColor = Color(0xFFF8A9C8);
+  static const Color myAccentColorPale = Color(0xFFFFD0E2);
 
   const MyColorScheme({
     // Set your custom colors as primary and secondary
@@ -32,7 +34,7 @@ class MyColorScheme extends ColorScheme{
 
 class MyTypography {
   static const TextStyle myHeadingStyle = TextStyle(
-    fontSize: 24, fontWeight: FontWeight.normal,
+    fontSize: 34, fontWeight: FontWeight.normal,
     fontFamily: "DMSerif"
 
   );
@@ -78,6 +80,11 @@ class MyTypography {
       fontSize: 16,
       fontFamily: "OpenSans",
       color: Colors.white
+  );
+
+  static const TextStyle myBodyStyle = TextStyle(
+      fontSize: 16,
+      fontFamily: "OpenSans"
   );
 }
 
@@ -137,20 +144,3 @@ class NavigationHelper {
 
 }
 
-class HttpHelper{
-  signupReq(SignupRequest sr){
-    try{
-
-    }
-    catch(e){
-
-    }
-
-  }
-
-  signinReq(){
-
-  }
-
-
-}

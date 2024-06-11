@@ -2,6 +2,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:tp1_flutter/DTOs/transfer.dart';
+import 'package:tp1_flutter/accueil.dart';
 import 'package:tp1_flutter/connexion.dart';
 
 import 'main.dart';
@@ -186,7 +188,7 @@ class _InscriptionState extends State<Inscription> {
                         NavigationHelper().home(context);
                       }, child: Text("Connexion", style: MyTypography.myBtnTextStyle)),
                       FilledButton(onPressed: () {
-                        NavigationHelper().navigateTo(context, Inscription()); //TODO : CHANGE TO HOME PAGE
+                        HttpHelper().Register(new SignupRequest(username: pseudo.text, password: mdp.text), context, Accueil());
                       }, child: Text("S'inscrire", style: MyTypography.myBtnTextStyle))
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
