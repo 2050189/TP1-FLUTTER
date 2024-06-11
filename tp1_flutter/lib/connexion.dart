@@ -5,6 +5,7 @@ import 'package:tp1_flutter/inscription.dart';
 import 'package:tp1_flutter/main.dart';
 
 import 'DTOs/transfer.dart';
+import 'http.dart';
 
 class Connexion extends StatefulWidget {
   const Connexion({super.key});
@@ -159,7 +160,8 @@ class _ConnexionState extends State<Connexion> {
                         NavigationHelper().navigateTo(context, Inscription());
                       }, child: Text("Inscription", style: MyTypography.myBtnTextStyle)),
                       FilledButton(onPressed: () {
-                        HttpHelper().Login(new SigninRequest(username: pseudoConnexion.text, password: mdpConnexion.text), context, Accueil());
+                        HttpHelper().Login(new SigninRequest(username: pseudoConnexion.text, password: mdpConnexion.text));
+                        NavigationHelper().navigateTo(context, Accueil());
                       }, child: Text("Se connecter", style: MyTypography.myBtnTextStyle))
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

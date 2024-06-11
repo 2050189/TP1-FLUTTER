@@ -17,7 +17,7 @@ class HttpHelper{
     return dio;
   }
 
-  Future<SigninResponse> Register(SignupRequest signupReq, BuildContext context, StatefulWidget page) async {
+  Future<SigninResponse> Register(SignupRequest signupReq) async {
     try{
       var response = await getDio().post(baseUrl+"api/id/signup", data: signupReq.toJson());
       print(response);
@@ -30,7 +30,7 @@ class HttpHelper{
 
   }
 
-  Future<SigninResponse> Login(SigninRequest signinReq, BuildContext context, StatefulWidget page) async {
+  Future<SigninResponse> Login(SigninRequest signinReq) async {
     try{
       var response = await getDio().get(baseUrl+"api/id/signin", data: signinReq.toJson());
       print(response);
@@ -42,7 +42,7 @@ class HttpHelper{
     }
   }
 
-  Future<List<HomeItemResponse>> GetAllTasks(BuildContext context, StatefulWidget page) async {
+  Future<List<HomeItemResponse>> GetAllTasks() async {
     try{
       var response = await getDio().get(baseUrl+"api/home");
       print(response);
@@ -58,7 +58,7 @@ class HttpHelper{
     }
   }
 
-  void CreateTask(AddTaskRequest addtaskReq, BuildContext context, StatefulWidget page) async {
+  void CreateTask(AddTaskRequest addtaskReq) async {
     try{
       var response = await getDio().post(baseUrl+"api/add", data: addtaskReq.toJson());
       print(response);
@@ -69,7 +69,7 @@ class HttpHelper{
     }
   }
 
-  Future<TaskDetailResponse> SeeTask(int taskID, BuildContext context, StatefulWidget page) async {
+  Future<TaskDetailResponse> SeeTask(int taskID) async {
     try{
       var response = await getDio().get(baseUrl+"api/detail/{$taskID}");
       print(response);
@@ -81,7 +81,7 @@ class HttpHelper{
     }
   }
 
-  ChangeProgress(int taskID, int value, BuildContext context, StatefulWidget page) async {
+  ChangeProgress(int taskID, int value) async {
     try{
       var response = await getDio().get(baseUrl+"api/progress/{$taskID}/{$value}");
       print(response);
