@@ -159,8 +159,8 @@ class _ConnexionState extends State<Connexion> {
                       OutlinedButton(onPressed: () {
                         NavigationHelper().navigateTo(context, Inscription());
                       }, child: Text("Inscription", style: MyTypography.myBtnTextStyle)),
-                      FilledButton(onPressed: () {
-                        HttpHelper().Login(new SigninRequest(username: pseudoConnexion.text, password: mdpConnexion.text));
+                      FilledButton(onPressed: () async {
+                        await Login(new SigninRequest(username: pseudoConnexion.text, password: mdpConnexion.text));
                         NavigationHelper().navigateTo(context, Accueil());
                       }, child: Text("Se connecter", style: MyTypography.myBtnTextStyle))
                     ],

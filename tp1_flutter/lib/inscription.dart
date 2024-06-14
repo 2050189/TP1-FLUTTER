@@ -188,8 +188,8 @@ class _InscriptionState extends State<Inscription> {
                         sendhttp();
                         NavigationHelper().home(context);
                       }, child: Text("Connexion", style: MyTypography.myBtnTextStyle)),
-                      FilledButton(onPressed: () {
-                        HttpHelper().Register(new SignupRequest(username: pseudo.text, password: mdp.text));
+                      FilledButton(onPressed: () async {
+                       await Register(new SignupRequest(username: pseudo.text, password: mdp.text));
                         NavigationHelper().navigateTo(context, Accueil());
                       }, child: Text("S'inscrire", style: MyTypography.myBtnTextStyle))
                     ],

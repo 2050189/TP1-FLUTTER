@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tp1_flutter/DTOs/transfer.dart';
+import 'package:tp1_flutter/accueil.dart';
 import 'package:tp1_flutter/main.dart';
+
+import 'http.dart';
 
 class Creation extends StatefulWidget {
   const Creation({super.key});
@@ -10,7 +14,11 @@ class Creation extends StatefulWidget {
 
 class _CreationState extends State<Creation> {
 
+  final TextEditingController nomTask = TextEditingController();
+
   DateTime selectedDate = DateTime.now();
+
+  String formattedDate = "";
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -21,6 +29,7 @@ class _CreationState extends State<Creation> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        formattedDate = selectedDate.day.toString() +"/"+ selectedDate.month.toString() +"/"+ selectedDate.year.toString();
       });
     }
   }
@@ -49,6 +58,7 @@ class _CreationState extends State<Creation> {
                   "Créer une tâche", textAlign: TextAlign.center, style: MyTypography.myHeadingStyle,
                 ),
                 TextFormField(
+                  controller: nomTask,
                   decoration: InputDecoration(
                       hintStyle: MyTypography.myHintStyle,
                       labelStyle: MyTypography.myLabelStyle,
@@ -64,14 +74,18 @@ class _CreationState extends State<Creation> {
                 Text(
                   "Sélectionnez une date de fin", style: MyTypography.myBodyStyle,
                 )),
+                Text(formattedDate, style: MyTypography.myBodyStyle),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
 
                     TextButton(onPressed: (){
-                      //TODO : NAVIGATION
+                      NavigationHelper().navigateTo(context, Accueil());
                     }, child: Text("Retour", style: MyTypography.myBodyStyle,)),
-                    ElevatedButton(onPressed: (){}, child: Text(
+                    ElevatedButton(onPressed: () async{
+                      await CreateTask(new AddTaskRequest(name: nomTask.text, deadline: selectedDate));
+                      NavigationHelper().navigateTo(context, Accueil());
+                    }, child: Text(
                         "Créer la tâche", style: MyTypography.myBodyStyleLight,
                     ))
                   ],

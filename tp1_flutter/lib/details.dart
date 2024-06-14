@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:tp1_flutter/DTOs/transfer.dart';
+import 'package:tp1_flutter/http.dart';
 import 'package:tp1_flutter/main.dart';
+
+import 'accueil.dart';
 
 class Details extends StatefulWidget {
   const Details({super.key, required this.taskid});
 
   final int taskid;
+
 
   @override
   State<Details> createState() => _DetailsState();
@@ -12,8 +17,31 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
 
+  String nameOfTask = "";
+
+  double _currentSliderValue = 0;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    GetTask();
+  }
+
+  GetTask()    async{
+    TaskDetailResponse tdr = await SeeTask(widget.taskid);
+    setState(() {
+
+    });
+    nameOfTask = tdr.name;
+    _currentSliderValue = tdr.percentageDone as double;
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
 
     return Scaffold(
       body: Column(
@@ -33,29 +61,42 @@ class _DetailsState extends State<Details> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "DETAILS", textAlign: TextAlign.center, style: MyTypography.myHeadingStyle,
+                  nameOfTask, textAlign: TextAlign.center, style: MyTypography.myHeadingStyle,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      hintStyle: MyTypography.myHintStyle,
-                      labelStyle: MyTypography.myLabelStyle,
-                      labelText: "Nom de la tâche",
-                      border: OutlineInputBorder(
-                      ),
-                      hintText: 'Ex: Examen de math',
-                      fillColor: Colors.white,
-                      filled: true
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Pourcentage fait : "+_currentSliderValue.toString()+"%", textAlign: TextAlign.center, style: MyTypography.myBodyStyleDark,
+                    ),
+                    Slider(
+                      value: _currentSliderValue,
+                      min: 0,
+                      max: 100,
+                      divisions: 20,
+                      label: _currentSliderValue.round().toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _currentSliderValue = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
+
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
 
                     TextButton(onPressed: (){
-                      //TODO : NAVIGATION
+                      NavigationHelper().navigateTo(context, Accueil());
                     }, child: Text("Retour", style: MyTypography.myBodyStyle,)),
-                    ElevatedButton(onPressed: (){}, child: Text(
-                      "Créer la tâche", style: MyTypography.myBodyStyleLight,
+                    FilledButton(onPressed: () async{
+                      await ChangeProgress(widget.taskid, _currentSliderValue.toInt());
+                      NavigationHelper().navigateTo(context, Accueil());
+                    }, child: Text(
+                      "Modifier le progrès", style: MyTypography.myBodyStyleLight,
                     ))
                   ],
                 )

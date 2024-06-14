@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tp1_flutter/http.dart';
 
 import 'DTOs/transfer.dart';
@@ -22,13 +23,17 @@ class _AccueilState extends State<Accueil> {
     // TODO: implement initState
     super.initState();
     getAllTask();
+
   }
 
   getAllTask() async {
-    listeTask = await HttpHelper().GetAllTasks();
+    listeTask = await GetAllTasks();
     setState(() {
 
     });
+    if(listeTask.isEmpty){
+      Fluttertoast.showToast(msg: "Ajoutez votre première tâche!", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+    }
   }
 
 
@@ -42,11 +47,33 @@ class _AccueilState extends State<Accueil> {
           ListView.builder(
               itemCount: listeTask.length,
               itemBuilder: (context, index){
-                return ListTile(
-                  title: Text(
-                      (listeTask[index].name).toString()
+                return Container(
+                  margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0), // Add border radius here
+                    color: MyColorScheme.myAccentColorPale,
                   ),
-                  onTap: () => NavigationHelper().navigateTo(context, Details(taskid: listeTask[index].id)),);
+                  child: ListTile(
+                    title: Text(
+                        (listeTask[index].name).toString(), style: MyTypography.myHeadingStyle
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            "${listeTask[index].deadline.day}/${listeTask[index].deadline.month}/${listeTask[index].deadline.year}",
+                            style: MyTypography.myBodyStyleDark
+                        ),
+                        Text(
+                            (listeTask[index].percentageTimeSpent.toString() + "% temps restant").toString(), style: MyTypography.myHintStyle
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                        (listeTask[index].percentageDone).toString() + "% fait", style: MyTypography.myLabelStyle
+                    ),
+                    onTap: () => NavigationHelper().navigateTo(context, Details(taskid: listeTask[index].id)),),
+                );
               }
           ),
 

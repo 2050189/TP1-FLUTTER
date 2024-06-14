@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'DTOs/transfer.dart';
 import 'main.dart';
 
-class HttpHelper{
-  String baseUrl = "http://10.0.2.2:8080/";
+class SingletonDIO{
+
 
   static var cookiemanager = CookieManager(CookieJar());
+
+
 
   static Dio getDio() {
     Dio dio = Dio();
@@ -17,80 +19,83 @@ class HttpHelper{
     return dio;
   }
 
-  Future<SigninResponse> Register(SignupRequest signupReq) async {
-    try{
-      var response = await getDio().post(baseUrl+"api/id/signup", data: signupReq.toJson());
-      print(response);
-      return SigninResponse.fromJson(response.data);
-    }
-    catch(e){
-      print(e);
-      throw(e);
-    }
 
+}
+
+
+String baseUrl = "http://10.0.2.2:8080/";
+
+Future<SigninResponse> Register(SignupRequest signupReq) async {
+  try{
+    var response = await SingletonDIO.getDio().post(baseUrl+"api/id/signup", data: signupReq.toJson());
+    print(response);
+    return SigninResponse.fromJson(response.data);
+  }
+  catch(e){
+    print(e);
+    throw(e);
   }
 
-  Future<SigninResponse> Login(SigninRequest signinReq) async {
-    try{
-      var response = await getDio().get(baseUrl+"api/id/signin", data: signinReq.toJson());
-      print(response);
-      return SigninResponse.fromJson(response.data);
-    }
-    catch(e){
-      print(e);
-      throw(e);
-    }
+}
+
+Future<SigninResponse> Login(SigninRequest signinReq) async {
+  try{
+    var response = await SingletonDIO.getDio().post(baseUrl+"api/id/signin", data: signinReq.toJson());
+    print(response);
+    return SigninResponse.fromJson(response.data);
   }
-
-  Future<List<HomeItemResponse>> GetAllTasks() async {
-    try{
-      var response = await getDio().get(baseUrl+"api/home");
-      print(response);
-      var listeJSON = response.data as List;
-      var listeTasks = listeJSON.map((elementJSON) {
-        return HomeItemResponse.fromJson(elementJSON);
-      }).toList();
-      return listeTasks;
-    }
-    catch(e){
-      print(e);
-      throw(e);
-    }
+  catch(e){
+    print(e);
+    throw(e);
   }
+}
 
-  void CreateTask(AddTaskRequest addtaskReq) async {
-    try{
-      var response = await getDio().post(baseUrl+"api/add", data: addtaskReq.toJson());
-      print(response);
-    }
-    catch(e){
-      print(e);
-      throw(e);
-    }
+Future<List<HomeItemResponse>> GetAllTasks() async {
+  try{
+    var response = await SingletonDIO.getDio().get(baseUrl+"api/home");
+    print(response);
+    var listeJSON = response.data as List;
+    var listeTasks = listeJSON.map((elementJSON) {
+      return HomeItemResponse.fromJson(elementJSON);
+    }).toList();
+    return listeTasks;
   }
-
-  Future<TaskDetailResponse> SeeTask(int taskID) async {
-    try{
-      var response = await getDio().get(baseUrl+"api/detail/{$taskID}");
-      print(response);
-      return TaskDetailResponse.fromJson(response.data);
-    }
-    catch(e){
-      print(e);
-      throw(e);
-    }
+  catch(e){
+    print(e);
+    throw(e);
   }
+}
 
-  ChangeProgress(int taskID, int value) async {
-    try{
-      var response = await getDio().get(baseUrl+"api/progress/{$taskID}/{$value}");
-      print(response);
-    }
-    catch(e){
-      print(e);
-      throw(e);
-    }
+CreateTask(AddTaskRequest addtaskReq) async {
+  try{
+    var response = await SingletonDIO.getDio().post(baseUrl+"api/add", data: addtaskReq.toJson());
+    print(response);
   }
+  catch(e){
+    print(e);
+    throw(e);
+  }
+}
 
+Future<TaskDetailResponse> SeeTask(int taskID) async {
+  try{
+    var response = await SingletonDIO.getDio().get(baseUrl+"api/detail/$taskID");
+    print(response);
+    return TaskDetailResponse.fromJson(response.data);
+  }
+  catch(e){
+    print(e);
+    throw(e);
+  }
+}
 
+ChangeProgress(int taskID, int value) async {
+  try{
+    var response = await SingletonDIO.getDio().get(baseUrl+"api/progress/$taskID/$value");
+    print(response);
+  }
+  catch(e){
+    print(e);
+    throw(e);
+  }
 }
