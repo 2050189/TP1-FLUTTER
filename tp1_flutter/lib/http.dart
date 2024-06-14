@@ -19,6 +19,8 @@ class SingletonDIO{
     return dio;
   }
 
+  static String pseudoSingleton = "";
+
 
 }
 
@@ -29,6 +31,7 @@ Future<SigninResponse> Register(SignupRequest signupReq) async {
   try{
     var response = await SingletonDIO.getDio().post(baseUrl+"api/id/signup", data: signupReq.toJson());
     print(response);
+    SingletonDIO.pseudoSingleton = signupReq.username;
     return SigninResponse.fromJson(response.data);
   }
   catch(e){
@@ -42,7 +45,21 @@ Future<SigninResponse> Login(SigninRequest signinReq) async {
   try{
     var response = await SingletonDIO.getDio().post(baseUrl+"api/id/signin", data: signinReq.toJson());
     print(response);
+    SingletonDIO.pseudoSingleton = signinReq.username;
     return SigninResponse.fromJson(response.data);
+  }
+  catch(e){
+    print(e);
+    throw(e);
+  }
+}
+
+Future<String> Logout() async{
+  try{
+    var response = await SingletonDIO.getDio().post(baseUrl+"api/id/signout");
+    print(response);
+    SingletonDIO.pseudoSingleton = "";
+    return response.toString();
   }
   catch(e){
     print(e);

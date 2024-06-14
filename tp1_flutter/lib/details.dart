@@ -4,6 +4,7 @@ import 'package:tp1_flutter/http.dart';
 import 'package:tp1_flutter/main.dart';
 
 import 'accueil.dart';
+import 'creation.dart';
 
 class Details extends StatefulWidget {
   const Details({super.key, required this.taskid});
@@ -19,7 +20,9 @@ class _DetailsState extends State<Details> {
 
   String nameOfTask = "";
 
-  double _currentSliderValue = 0;
+  int _currentSliderValue = 0;
+
+  double timeLeftPerc = 0;
 
 
   @override
@@ -35,7 +38,8 @@ class _DetailsState extends State<Details> {
 
     });
     nameOfTask = tdr.name;
-    _currentSliderValue = tdr.percentageDone as double;
+    _currentSliderValue = tdr.percentageDone;
+    timeLeftPerc = tdr.percentageTimeSpent;
   }
 
   @override
@@ -43,7 +47,52 @@ class _DetailsState extends State<Details> {
 
 
 
-    return Scaffold(
+    return Scaffold(appBar: AppBar(
+      backgroundColor: Colors.white,
+    ),
+      drawer: Drawer(
+          backgroundColor: Colors.white,
+          child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: MyColorScheme.myPrimaryColor,
+                  ),
+                  child: Text(
+                    "Salut, "+
+                        SingletonDIO.pseudoSingleton+"!",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text("Accueil"),
+                  onTap: () async {
+                    await NavigationHelper().navigateTo(context, Accueil());
+                  }
+                  ,
+                ),
+                ListTile(
+                  title: Text("Création d'une tâche"),
+                  onTap: () async{
+                    await NavigationHelper().navigateTo(context, Creation());
+                  }
+                  ,
+                ),
+                ListTile(
+                  title: Text("Déconnexion"),
+                  onTap: () async {
+                    await Logout();
+                    await NavigationHelper().home(context);
+                  }
+                  ,
+                )
+              ]
+          )
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -61,7 +110,10 @@ class _DetailsState extends State<Details> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  nameOfTask, textAlign: TextAlign.center, style: MyTypography.myHeadingStyle,
+                  nameOfTask, textAlign: TextAlign.center, style: MyTypography.myDisplayStyleDark,
+                ),
+                Text(
+                  "Temps restant : "+ timeLeftPerc.toString()+"%", textAlign: TextAlign.center, style: MyTypography.myHeadingStyle,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -70,14 +122,14 @@ class _DetailsState extends State<Details> {
                       "Pourcentage fait : "+_currentSliderValue.toString()+"%", textAlign: TextAlign.center, style: MyTypography.myBodyStyleDark,
                     ),
                     Slider(
-                      value: _currentSliderValue,
+                      value: _currentSliderValue.toDouble(),
                       min: 0,
                       max: 100,
                       divisions: 20,
                       label: _currentSliderValue.round().toString(),
                       onChanged: (double value) {
                         setState(() {
-                          _currentSliderValue = value;
+                          _currentSliderValue = value.toInt();
                         });
                       },
                     ),

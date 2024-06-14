@@ -35,8 +35,8 @@ class MyColorScheme extends ColorScheme{
 class MyTypography {
   static const TextStyle myHeadingStyle = TextStyle(
     fontSize: 34, fontWeight: FontWeight.normal,
-    fontFamily: "DMSerif"
-
+    fontFamily: "DMSerif",
+    color: MyColorScheme.myPrimaryColor
   );
 
   static const TextStyle myDisplayStyleLight = TextStyle(

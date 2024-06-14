@@ -42,6 +42,52 @@ class _AccueilState extends State<Accueil> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+        DrawerHeader(
+        decoration: BoxDecoration(
+          color: MyColorScheme.myPrimaryColor,
+        ),
+        child: Text(
+          "Salut, "+
+          SingletonDIO.pseudoSingleton+"!",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+          ),
+        ),
+      ),
+            ListTile(
+              title: Text("Accueil"),
+              onTap: () async {
+                await NavigationHelper().navigateTo(context, Accueil());
+              }
+              ,
+            ),
+            ListTile(
+              title: Text("Création d'une tâche"),
+              onTap: () async{
+                await NavigationHelper().navigateTo(context, Creation());
+              }
+              ,
+            ),
+            ListTile(
+              title: Text("Déconnexion"),
+              onTap: () async {
+                await Logout();
+                await NavigationHelper().home(context);
+              }
+              ,
+            )
+      ]
+        )
+      ),
       body: Center(
         child:
           ListView.builder(
@@ -65,7 +111,7 @@ class _AccueilState extends State<Accueil> {
                             style: MyTypography.myBodyStyleDark
                         ),
                         Text(
-                            (listeTask[index].percentageTimeSpent.toString() + "% temps restant").toString(), style: MyTypography.myHintStyle
+                            (listeTask[index].percentageTimeSpent.toString() + "% temps restant").toString(), style: MyTypography.myBodyStyleDark
                         ),
                       ],
                     ),
